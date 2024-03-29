@@ -56,6 +56,7 @@ func (r *router) setupRoutes() {
 	r.eng.Use(gin.Logger())
 
 	r.eng.GET("/echo", r.echo)
+	r.eng.POST("/employee/add", r.employeeAddHandler)
 }
 
 func (r *router) Run(ctx context.Context) error {
