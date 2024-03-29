@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  service:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile  # Укажите путь к вашему Dockerfile
+
+    ports:
+      - 80:80
