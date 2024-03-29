@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 services:
   service:
@@ -8,3 +8,19 @@ services:
 
     ports:
       - 80:80
+
+  stan-nats:
+    image: nats-streaming:latest
+    container_name: stan-nats
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    command: [
+      "-p", "4222",
+      "-m", "8222",
+      "-store", "file",
+      "-dir", "/data",
+      "-cid", "my-cluster" # Установка имени кластера
+    ]
+    volumes:
+      - ./data:/data
