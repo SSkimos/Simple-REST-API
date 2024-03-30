@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  employees:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: 'employees'
+      POSTGRES_USER: 'admin'
+      POSTGRES_PASSWORD: '123'
+    volumes:
+      - ./docker-entrypoint-initdb.d/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+    ports:
+      - "9876:5432"
