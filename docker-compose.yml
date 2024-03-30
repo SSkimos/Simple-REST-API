@@ -16,3 +16,11 @@ services:
     ]
     volumes:
       - ./data:/data
+
+  publisher:
+    build:
+      context: ./publisher
+      dockerfile: ./docker/Dockerfile  # Укажите путь к вашему Dockerfile
+
+    ports:
+      - 80:80
