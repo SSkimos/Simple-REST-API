@@ -17,6 +17,19 @@ services:
     volumes:
       - ./data:/data
 
+  employees:
+    image: postgres
+    container_name: database
+    restart: always
+    environment:
+      POSTGRES_DB: 'employees'
+      POSTGRES_USER: 'admin'
+      POSTGRES_PASSWORD: '123'
+    volumes:
+      - ./database/docker-entrypoint-initdb.d/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+    ports:
+      - "9876:5432"
+
   publisher:
     build:
       context: ./publisher
@@ -24,3 +37,11 @@ services:
 
     ports:
       - 80:80
+
+  retrieval:
+    build:
+      context: ./retrieval
+      dockerfile: ./docker/Dockerfile  # Укажите путь к вашему Dockerfile
+
+    ports:
+      - 70:70
