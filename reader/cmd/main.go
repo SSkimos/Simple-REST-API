@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/curtrika/reader/pkg/common/db"
+	"github.com/curtrika/reader/pkg/employees"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 )
@@ -14,14 +15,9 @@ func main() {
 	dbUrl := viper.Get("DB_URL").(string)
 
 	r := gin.Default()
-	db.Init(dbUrl)
+	h := db.Init(dbUrl)
 
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"port":  port,
-			"dbUrl": dbUrl,
-		})
-	})
+	employees.RegisterRoutes(r, h)
 
 	r.Run(port)
 }
