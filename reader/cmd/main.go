@@ -1,7 +1,7 @@
 package main
 
 import (
-	"./pkg/common/db"
+	"github.com/curtrika/reader/pkg/common/db"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 )

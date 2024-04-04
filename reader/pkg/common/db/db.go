@@ -1,8 +1,8 @@
 package db
 
 import (
+	"github.com/curtrika/reader/pkg/common/models"
 	"log"
-	"models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
