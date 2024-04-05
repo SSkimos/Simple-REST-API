@@ -10,7 +10,7 @@ COPY . .
 RUN go mod tidy
 RUN go mod download
 
-RUN go build -o /app/сmd ./build
+RUN go build -o /build/main ./cmd/
 
 EXPOSE 3000
 
