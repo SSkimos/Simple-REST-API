@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/curtrika/publisher/pkg/common/db"
-	"github.com/curtrika/publisher/pkg/employees"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
+	"publisher/pkg/common/nats"
+	"publisher/pkg/employees"
 )
 
 func main() {
@@ -15,9 +15,9 @@ func main() {
 	NatsUrl := viper.Get("NATS_URL").(string)
 
 	r := gin.Default()
-	h := db.Init(NatsUrl)
+	c := nats.InitConnection(NatsUrl)
 
-	employees.RegisterRoutes(r, h)
+	employees.RegisterRoutes(r, c)
 
 	r.Run(port)
 }

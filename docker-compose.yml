@@ -52,3 +52,10 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - 3000:3000
+
+  publisher:
+    build:
+      context: ./publisher
+      dockerfile: ./Dockerfile
+    ports:
+      - 4000:4000

@@ -1,10 +1,11 @@
 package employees
 
 import (
-	"github.com/curtrika/publisher/pkg/common/models"
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"publisher/pkg/common/models"
 )
 
 type AddEmployeeRequestBody struct {
@@ -41,27 +42,21 @@ func (h handler) AddEmployee(c *gin.Context) {
 	employee.PhoneNumber = body.PhoneNumber
 	employee.Address = body.Address
 
-	if result := h.DB.Create(&employee); result.Error != nil {
-		c.AbortWithError(http.StatusNotFound, result.Error)
-		return
-	}
-
 	jsonData, err := json.Marshal(employee)
 	subj, msg := "new employee", jsonData
+	if err != nil {
 
-	if reply != nil && *reply != "" {
-		nc.PublishRequest(subj, *reply, msg)
-	} else {
-		nc.Publish(subj, msg)
 	}
 
-	nc.Flush()
+	h.con.Publish(subj, msg)
 
-	if err := nc.LastError(); err != nil {
+	h.con.Flush()
+
+	if err := h.con.LastError(); err != nil {
 		log.Panicf("Last error: %v", err)
 	} else {
 		log.Printf("Published [%s] : '%s'\n", subj, msg)
 	}
 
-	c.JSON(http.StatusCreated, &employee)
+	c.JSON(http.StatusOK, &employee)
 }

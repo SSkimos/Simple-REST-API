@@ -5,10 +5,13 @@ DOCKER ?= docker
 
 all: build up
 
-build: reader_build
+build: reader_build publisher_build
 
 reader_build:
 	$(MAKE) -C reader
+
+publisher_build:
+	$(MAKE) -C publisher
 
 up:
 	docker-compose build && docker-compose up -d

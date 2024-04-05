@@ -1,6 +1,6 @@
 package models
 
-type Request struct {
+type Employee struct {
 	EmployeeId  int    `json:"employee_id"`
 	FirstName   string `json:"first_name"`
 	Last_name   string `json:"last_name"`

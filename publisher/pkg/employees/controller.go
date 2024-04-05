@@ -2,16 +2,16 @@ package employees
 
 import (
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
+	"github.com/nats-io/nats.go"
 )
 
 type handler struct {
-	DB *gorm.DB
+	con *nats.Conn
 }
 
-func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
+func RegisterRoutes(r *gin.Engine, c *nats.Conn) {
 	h := &handler{
-		DB: db,
+		con: c,
 	}
 
 	routes := r.Group("/employees")
