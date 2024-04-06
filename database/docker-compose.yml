@@ -5,7 +5,7 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_DB: 'employees'
+      POSTGRES_DB: 'employee'
       POSTGRES_USER: 'admin'
       POSTGRES_PASSWORD: '123'
     volumes:
