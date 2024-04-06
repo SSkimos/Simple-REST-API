@@ -51,7 +51,7 @@ services:
       context: ./retrieval
       dockerfile: ./Dockerfile
     ports:
-      - 3000:3000
+      - 80:80
     depends_on:
       - db_employees
 
@@ -60,7 +60,17 @@ services:
       context: ./publisher
       dockerfile: ./Dockerfile
     ports:
-      - 4000:4000
+      - 8080:8080
+    depends_on:
+      - db_employees
+      - stan-nats
+
+  reader:
+    build:
+      context: ./reader
+      dockerfile: ./Dockerfile
+    ports:
+      - 8081:8081
     depends_on:
       - db_employees
       - stan-nats

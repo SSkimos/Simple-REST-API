@@ -3,12 +3,23 @@ package main
 import (
 	"fmt"
 	"github.com/nats-io/nats.go"
+	"github.com/spf13/viper"
 	"log"
+	"time"
 )
 
 func main() {
+	time.Sleep(8 * time.Second)
+	viper.SetConfigFile("./pkg/common/envs/.env")
+	viper.ReadInConfig()
+
+	//port := viper.Get("PORT").(string)
+	//dbUrl := viper.Get("DB_URL").(string)
+	//
+	//h := db.Init(dbUrl)
+
 	// Подключение к серверу NATS
-	nc, err := nats.Connect("localhost:4222")
+	nc, err := nats.Connect("stan-nats:4222")
 	if err != nil {
 		log.Fatal(err)
 	}

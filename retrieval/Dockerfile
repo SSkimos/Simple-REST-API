@@ -12,6 +12,6 @@ RUN go mod download
 
 RUN go build -o /build/main ./cmd/
 
-EXPOSE 3000
+EXPOSE 80
 
 CMD ["/build/main"]
