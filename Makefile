@@ -5,10 +5,10 @@ DOCKER ?= docker
 
 all: build up
 
-build: reader_build publisher_build
+build: retrieval_build publisher_build
 
-reader_build:
-	$(MAKE) -C reader
+retrieval_build:
+	$(MAKE) -C retrieval
 
 publisher_build:
 	$(MAKE) -C publisher
@@ -19,4 +19,4 @@ up:
 down:
 	docker-compose down --volumes
 
-restart: down up
+restart: down build up

@@ -1,5 +1,4 @@
 GO ?= go
-DOCKER ?= docker
 
 .PHONY: build
 

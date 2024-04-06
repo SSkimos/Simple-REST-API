@@ -3,9 +3,11 @@ package employees
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"github.com/nats-io/nats.go"
 	"log"
 	"net/http"
 	"publisher/pkg/common/models"
+	"time"
 )
 
 type AddEmployeeRequestBody struct {
@@ -22,6 +24,14 @@ type AddEmployeeRequestBody struct {
 }
 
 func (h handler) AddEmployee(c *gin.Context) {
+	nc, err := nats.Connect("stan-nats:4222")
+	if err != nil {
+		log.Panic(err)
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	defer nc.Close()
+
 	body := AddEmployeeRequestBody{}
 
 	if err := c.BindJSON(&body); err != nil {
@@ -43,20 +53,27 @@ func (h handler) AddEmployee(c *gin.Context) {
 	employee.Address = body.Address
 
 	jsonData, err := json.Marshal(employee)
-	subj, msg := "new employee", jsonData
 	if err != nil {
+		log.Panic("Json marshall error: %w", err)
+	}
+	subj, msg := "new_employee", jsonData
 
+	timeout := 60 * time.Second
+	response, err := nc.Request("new_employee", jsonData, timeout)
+
+	if err != nil {
+		if err == nats.ErrTimeout {
+			log.Printf("Error: request timed out after %v", timeout)
+		} else {
+			log.Printf("Panic: %w", err)
+			c.AbortWithError(http.StatusInternalServerError, err)
+		}
+		return
 	}
 
-	h.con.Publish(subj, msg)
+	nc.Flush()
 
-	h.con.Flush()
-
-	if err := h.con.LastError(); err != nil {
-		log.Panicf("Last error: %v", err)
-	} else {
-		log.Printf("Published [%s] : '%s'\n", subj, msg)
-	}
-
+	log.Printf("Published [%s] : '%s'\n", subj, msg)
+	log.Printf("Received response [%s] : '%s'\n", string(response.Data))
 	c.JSON(http.StatusOK, &employee)
 }

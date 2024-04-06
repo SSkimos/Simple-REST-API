@@ -1,23 +1,36 @@
 package main
 
 import (
-	"github.com/curtrika/reader/pkg/common/db"
-	"github.com/curtrika/reader/pkg/employees"
-	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
+	"fmt"
+	"github.com/nats-io/nats.go"
+	"log"
 )
 
 func main() {
-	viper.SetConfigFile("./pkg/common/envs/.env")
-	viper.ReadInConfig()
+	// Подключение к серверу NATS
+	nc, err := nats.Connect("localhost:4222")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer nc.Close()
 
-	port := viper.Get("PORT").(string)
-	dbUrl := viper.Get("DB_URL").(string)
+	// Обработка сообщений из "my-subject"
+	nc.Subscribe("new_employee", func(msg *nats.Msg) {
+		// Получение и обработка сообщения от Publisher
+		request := string(msg.Data)
+		fmt.Printf("Received request: %s\n", request)
 
-	r := gin.Default()
-	h := db.Init(dbUrl)
+		// Отправка ответа обратно Publisher
+		response := []byte("Message processed successfully")
+		nc.Publish(msg.Reply, response)
+	})
 
-	employees.RegisterRoutes(r, h)
+	// Ожидание сообщений
+	nc.Flush()
+	if err := nc.LastError(); err != nil {
+		log.Fatal(err)
+	}
 
-	r.Run(port)
+	fmt.Println("Subscriber is running, waiting for messages...")
+	select {} // Бесконечное ожидание сообщений
 }
