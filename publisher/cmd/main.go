@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"publisher/pkg/common/nats"
+	"publisher/pkg/common/utils"
 	"publisher/pkg/employees"
 )
 
@@ -15,9 +15,14 @@ func main() {
 	NatsUrl := viper.Get("NATS_URL").(string)
 
 	r := gin.Default()
-	c := nats.InitConnection(NatsUrl)
+	nc, err := utils.InitNATSConnection(NatsUrl)
+	defer utils.CloseConnection(nc)
 
-	employees.RegisterRoutes(r, c)
+	if err != nil {
+		//TODO: тык
+	}
+
+	employees.RegisterRoutes(r, nc)
 
 	r.Run(port)
 }

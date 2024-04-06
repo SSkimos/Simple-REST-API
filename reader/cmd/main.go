@@ -5,43 +5,32 @@ import (
 	"github.com/nats-io/nats.go"
 	"github.com/spf13/viper"
 	"log"
-	"time"
+	"reader/pkg/common/utils"
 )
 
 func main() {
-	time.Sleep(8 * time.Second)
 	viper.SetConfigFile("./pkg/common/envs/.env")
 	viper.ReadInConfig()
 
-	//port := viper.Get("PORT").(string)
-	//dbUrl := viper.Get("DB_URL").(string)
-	//
-	//h := db.Init(dbUrl)
+	natsUrl := viper.Get("NATS_URL").(string)
+	messageQueue := make(chan *nats.Msg)
 
-	// Подключение к серверу NATS
-	nc, err := nats.Connect("stan-nats:4222")
+	nc, err := utils.InitConnection(natsUrl)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Connection to NATS error: %w", err)
+		return
 	}
-	defer nc.Close()
+	defer utils.CloseConnection(nc)
 
-	// Обработка сообщений из "my-subject"
-	nc.Subscribe("new_employee", func(msg *nats.Msg) {
-		// Получение и обработка сообщения от Publisher
-		request := string(msg.Data)
-		fmt.Printf("Received request: %s\n", request)
-
-		// Отправка ответа обратно Publisher
-		response := []byte("Message processed successfully")
-		nc.Publish(msg.Reply, response)
-	})
-
-	// Ожидание сообщений
-	nc.Flush()
-	if err := nc.LastError(); err != nil {
-		log.Fatal(err)
+	utils.CreateSubscription(nc, messageQueue)
+	for {
+		select {
+		case messageFromChan := <-messageQueue:
+			fmt.Printf("Received request from chan: %s\n", messageFromChan.Data)
+			utils.SendReply(nc, messageFromChan, "Message processed successfully")
+			if err := nc.LastError(); err != nil {
+				log.Fatal(err)
+			}
+		}
 	}
-
-	fmt.Println("Subscriber is running, waiting for messages...")
-	select {} // Бесконечное ожидание сообщений
 }

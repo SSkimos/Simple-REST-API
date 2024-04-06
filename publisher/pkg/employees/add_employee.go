@@ -24,13 +24,14 @@ type AddEmployeeRequestBody struct {
 }
 
 func (h handler) AddEmployee(c *gin.Context) {
-	nc, err := nats.Connect("stan-nats:4222")
-	if err != nil {
-		log.Panic(err)
-		c.AbortWithError(http.StatusInternalServerError, err)
-		return
-	}
-	defer nc.Close()
+
+	//nc, err := nats.Connect("stan-nats:4222")
+	//if err != nil {
+	//	log.Panic(err)
+	//	c.AbortWithError(http.StatusInternalServerError, err)
+	//	return
+	//}
+	//defer nc.Close()
 
 	body := AddEmployeeRequestBody{}
 
@@ -59,7 +60,7 @@ func (h handler) AddEmployee(c *gin.Context) {
 	subj, msg := "new_employee", jsonData
 
 	timeout := 60 * time.Second
-	response, err := nc.Request("new_employee", jsonData, timeout)
+	response, err := h.nc.Request("new_employee", jsonData, timeout) // умирает вот тут
 
 	if err != nil {
 		if err == nats.ErrTimeout {
@@ -71,7 +72,7 @@ func (h handler) AddEmployee(c *gin.Context) {
 		return
 	}
 
-	nc.Flush()
+	h.nc.Flush()
 
 	log.Printf("Published [%s] : '%s'\n", subj, msg)
 	log.Printf("Received response [%s] : '%s'\n", string(response.Data))

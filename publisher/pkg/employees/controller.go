@@ -6,12 +6,12 @@ import (
 )
 
 type handler struct {
-	con *nats.Conn
+	nc *nats.Conn
 }
 
-func RegisterRoutes(r *gin.Engine, c *nats.Conn) {
+func RegisterRoutes(r *gin.Engine, ncon *nats.Conn) {
 	h := &handler{
-		con: c,
+		nc: ncon,
 	}
 
 	routes := r.Group("/employees")
