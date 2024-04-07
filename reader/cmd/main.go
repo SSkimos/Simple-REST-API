@@ -36,13 +36,19 @@ func main() {
 			if err != nil {
 				log.Panic("Unmarshal error: %w")
 			}
-			//TODO: check?
 
-			employees.AddEmployee(database, employee)
-			utils.SendReply(nc, messageFromChan, "Message processed successfully")
+			if employees.CheckExistingID(database, employee) == true {
+				utils.SendReply(nc, messageFromChan, "409 Conflict")
+				if err := nc.LastError(); err != nil {
+					log.Panic(err)
+				}
+			} else {
+				employees.AddEmployee(database, employee)
 
-			if err := nc.LastError(); err != nil {
-				log.Panic(err)
+				utils.SendReply(nc, messageFromChan, "201 Created")
+				if err := nc.LastError(); err != nil {
+					log.Panic(err)
+				}
 			}
 		}
 	}

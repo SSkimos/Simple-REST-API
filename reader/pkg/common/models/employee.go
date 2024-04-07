@@ -1,7 +1,7 @@
 package models
 
 type Employee struct {
-	EmployeeId  int    `gorm:"unique"`
+	Id          int    `json:"employee_id"`
 	FirstName   string `json:"first_name"`
 	Last_name   string `json:"last_name"`
 	Position    string `json:"position"`
