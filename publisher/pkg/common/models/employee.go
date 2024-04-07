@@ -1,14 +1,7 @@
 package models
 
-import "github.com/nats-io/nats.go"
-
-type Request struct {
-	employee Employee
-	msg      *nats.Msg
-}
-
 type Employee struct {
-	EmployeeId  int    `json:"employee_id"`
+	Id          int    `json:"employee_id"`
 	FirstName   string `json:"first_name"`
 	Last_name   string `json:"last_name"`
 	Position    string `json:"position"`

@@ -5,7 +5,7 @@ DOCKER ?= docker
 
 all: build up
 
-build: retrieval_build publisher_build reader_build
+build: retrieval_build publisher_build reader_build cron_build
 
 retrieval_build:
 	$(MAKE) -C retrieval
@@ -15,6 +15,9 @@ publisher_build:
 
 reader_build:
 	$(MAKE) -C reader
+
+cron_build:
+	$(MAKE) -C cron
 
 up:
 	docker-compose build && docker-compose up -d
