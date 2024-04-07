@@ -2,14 +2,15 @@ package utils
 
 import (
 	"github.com/nats-io/nats.go"
+	"log"
 )
 
-func InitNATSConnection(natsUrl string) (*nats.Conn, error) {
-	nc, err := nats.Connect(natsUrl)
+func InitNatsConnection(url string) *nats.Conn {
+	nc, err := nats.Connect(url)
 	if err != nil {
-		return nil, err
+		log.Fatal("Connection to NATS error: %w", err)
 	}
-	return nc, nil
+	return nc
 }
 
 func CloseConnection(nc *nats.Conn) {

@@ -6,7 +6,6 @@ import (
 	"github.com/nats-io/nats.go"
 	"log"
 	"net/http"
-	"publisher/pkg/common/models"
 	"time"
 )
 
@@ -24,15 +23,6 @@ type AddEmployeeRequestBody struct {
 }
 
 func (h handler) AddEmployee(c *gin.Context) {
-
-	//nc, err := nats.Connect("stan-nats:4222")
-	//if err != nil {
-	//	log.Panic(err)
-	//	c.AbortWithError(http.StatusInternalServerError, err)
-	//	return
-	//}
-	//defer nc.Close()
-
 	body := AddEmployeeRequestBody{}
 
 	if err := c.BindJSON(&body); err != nil {
@@ -40,27 +30,15 @@ func (h handler) AddEmployee(c *gin.Context) {
 		return
 	}
 
-	var employee models.Employee
-
-	employee.EmployeeId = body.EmployeeId
-	employee.FirstName = body.FirstName
-	employee.Last_name = body.Last_name
-	employee.Position = body.Position
-	employee.Department = body.Department
-	employee.HireDate = body.HireDate
-	employee.Salary = body.Salary
-	employee.Email = body.Email
-	employee.PhoneNumber = body.PhoneNumber
-	employee.Address = body.Address
-
-	jsonData, err := json.Marshal(employee)
+	jsonData, err := json.Marshal(body)
 	if err != nil {
 		log.Panic("Json marshall error: %w", err)
 	}
 	subj, msg := "new_employee", jsonData
 
 	timeout := 60 * time.Second
-	response, err := h.nc.Request("new_employee", jsonData, timeout) // умирает вот тут
+	response, err := h.nc.Request("new_employee", jsonData, timeout)
+	log.Printf("Published [%s] : '%s'\n", subj, msg)
 
 	if err != nil {
 		if err == nats.ErrTimeout {
@@ -74,7 +52,13 @@ func (h handler) AddEmployee(c *gin.Context) {
 
 	h.nc.Flush()
 
-	log.Printf("Published [%s] : '%s'\n", subj, msg)
-	log.Printf("Received response [%s] : '%s'\n", string(response.Data))
-	c.JSON(http.StatusOK, &employee)
+	switch string(response.Data) {
+	case "201 Created":
+		log.Printf("Received response [%s] : '%s'\n", string(response.Data))
+		c.JSON(http.StatusNoContent, nil)
+
+	case "409 Conflict":
+		log.Printf("Received response [%s] : '%s'\n", string(response.Data))
+		c.JSON(http.StatusConflict, nil)
+	}
 }

@@ -15,12 +15,8 @@ func main() {
 	NatsUrl := viper.Get("NATS_URL").(string)
 
 	r := gin.Default()
-	nc, err := utils.InitNATSConnection(NatsUrl)
+	nc := utils.InitNatsConnection(NatsUrl)
 	defer utils.CloseConnection(nc)
-
-	if err != nil {
-		//TODO: тык
-	}
 
 	employees.RegisterRoutes(r, nc)
 
