@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/viper"
 	"log"
 	"reader/pkg/common/db"
-	"reader/pkg/common/models"
+	"reader/pkg/common/models/employee"
 	"reader/pkg/common/utils"
 	"reader/pkg/employees"
 	"time"
@@ -31,7 +31,7 @@ func main() {
 		select {
 		case messageFromChan := <-messageQueue:
 			fmt.Printf("Received request from chan: %s\n", messageFromChan.Data)
-			var employee models.Employee
+			var employee employee.Employee
 			err := json.Unmarshal(messageFromChan.Data, &employee)
 			if err != nil {
 				log.Panic("Unmarshal error: %w")

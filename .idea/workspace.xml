@@ -6,9 +6,26 @@
   <component name="ChangeListManager">
     <list default="true" id="70d6601b-ee15-49aa-ac75-07d48e1914c2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cron/build/main" beforeDir="false" afterPath="$PROJECT_DIR$/cron/build/main" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proxy/pkg/common/env/.env" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/proxy/pkg/common/utils/utils.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/publisher/build/main" beforeDir="false" afterPath="$PROJECT_DIR$/publisher/build/main" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/publisher/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/publisher/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/publisher/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/publisher/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/publisher/pkg/common/models/employee.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/publisher/pkg/employees/add_employee.go" beforeDir="false" afterPath="$PROJECT_DIR$/publisher/pkg/employees/add_employee.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reader/build/main" beforeDir="false" afterPath="$PROJECT_DIR$/reader/build/main" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reader/cmd/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/reader/cmd/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reader/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/reader/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reader/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/reader/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reader/pkg/common/models/employee.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/reader/pkg/employees/add_employee.go" beforeDir="false" afterPath="$PROJECT_DIR$/reader/pkg/employees/add_employee.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reader/pkg/employees/check_existing_id.go" beforeDir="false" afterPath="$PROJECT_DIR$/reader/pkg/employees/check_existing_id.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/retrieval/build/main" beforeDir="false" afterPath="$PROJECT_DIR$/retrieval/build/main" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/retrieval/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/retrieval/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/retrieval/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/retrieval/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/retrieval/pkg/common/db/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/retrieval/pkg/common/db/db.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/retrieval/pkg/common/models/employee.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/retrieval/pkg/employees/get_employee.go" beforeDir="false" afterPath="$PROJECT_DIR$/retrieval/pkg/employees/get_employee.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -6,31 +6,19 @@ import (
 	"github.com/nats-io/nats.go"
 	"log"
 	"net/http"
+	"publisher/pkg/common/models/employee"
 	"time"
 )
 
-type AddEmployeeRequestBody struct {
-	EmployeeId  int    `json:"employee_id"`
-	FirstName   string `json:"first_name"`
-	Last_name   string `json:"last_name"`
-	Position    string `json:"position"`
-	Department  string `json:"department"`
-	HireDate    string `json:"hire_date"`
-	Salary      int    `json:"salary"`
-	Email       string `json:"email"`
-	PhoneNumber int    `json:"phone_number"`
-	Address     string `json:"address"`
-}
-
 func (h handler) AddEmployee(c *gin.Context) {
-	body := AddEmployeeRequestBody{}
+	var employee employee.Employee
 
-	if err := c.BindJSON(&body); err != nil {
+	if err := c.BindJSON(&employee); err != nil {
 		c.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
 
-	jsonData, err := json.Marshal(body)
+	jsonData, err := json.Marshal(employee)
 	if err != nil {
 		log.Panic("Json marshall error: %w", err)
 	}

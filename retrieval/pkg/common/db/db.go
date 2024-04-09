@@ -2,7 +2,7 @@ package db
 
 import (
 	"log"
-	"retrieval/pkg/common/models"
+	"retrieval/pkg/common/models/employee"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -15,7 +15,7 @@ func Init(url string) *gorm.DB {
 		log.Panic("Init db error: %v", err)
 	}
 
-	db.AutoMigrate(&models.Employee{})
+	db.AutoMigrate(&employee.Employee{})
 
 	return db
 }

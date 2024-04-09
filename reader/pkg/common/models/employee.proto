@@ -1,0 +1,17 @@
+syntax = "proto3";
+package models;
+option go_package  = "/employee";
+
+message Employee {
+  int32 id = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string position = 4;
+  string department = 5;
+  string hireDate = 6;
+  int32 salary = 7;
+  string email = 8;
+  string phoneNumber = 9;
+  string address = 10;
+}
+
