@@ -31,6 +31,7 @@ services:
       - "9876:5432"
 
   retrieval:
+    container_name: retrieval
     build:
       context: ./retrieval
       dockerfile: ./Dockerfile
@@ -40,6 +41,7 @@ services:
       - db_employees
 
   publisher:
+    container_name: publisher
     build:
       context: ./publisher
       dockerfile: ./Dockerfile
@@ -50,6 +52,7 @@ services:
       - stan-nats
 
   reader:
+    container_name: reader
     build:
       context: ./reader
       dockerfile: ./Dockerfile
@@ -60,6 +63,7 @@ services:
       - stan-nats
 
   cron:
+    container_name: cron
     build:
       context: ./cron
       dockerfile: ./Dockerfile
@@ -67,3 +71,11 @@ services:
       - 8082:8082
     depends_on:
       - db_employees
+
+  proxy:
+    container_name: proxy
+    build:
+      context: ./proxy
+      dockerfile: ./Dockerfile
+    ports:
+      - 8000:8000
